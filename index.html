@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departamento 101 · Pedro Aguirre Cerda 8480</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --accent: #D9603B;
+            --accent-soft: #FBF0ED;
+            --bg: #F5F5F3;
+            --white: #FFFFFF;
+            --text: #1C1C1C;
+            --muted: #6E6E6E;
+            --border: #E8E8E5;
+            --radius: 14px;
+            --shadow: 0 1px 8px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .header-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-logo {
+            width: 38px;
+            height: 38px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .tab-btn {
+            padding: 13px 18px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: color .18s, border-color .18s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── LAYOUT ── */
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        /* ── WELCOME ── */
+        .hero {
+            background: linear-gradient(145deg, #1C1C1C 0%, #2E2E2E 100%);
+            border-radius: var(--radius);
+            padding: 30px 26px;
+            color: #fff;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 130px;
+            height: 130px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: .12;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            margin-bottom: 10px;
+        }
+
+        .hero h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            margin-bottom: 6px;
+        }
+
+        .hero p {
+            font-size: 13.5px;
+            opacity: .65;
+            line-height: 1.55;
+            max-width: 420px;
+        }
+
+        /* ── INFO GRID ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .info-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--accent-soft);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .info-val {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .info-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        /* ── ACCESS CARD ── */
+        .access-text {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.6;
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 14px;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* ── INVENTORY ── */
+        .inv-section {
+            margin-bottom: 20px;
+        }
+
+        .inv-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .inv-item {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 13px;
+        }
+
+        .inv-item .emoji {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .inv-qty {
+            margin-left: auto;
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .inv-item.pending {
+            border-left: 3px solid #F59E0B;
+        }
+
+        .inv-item.sugg {
+            background: var(--bg);
+            border: 1.5px dashed #D1D1CC;
+            box-shadow: none;
+            color: var(--muted);
+        }
+
+        .inv-qty.chk {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .inv-qty.sug {
+            background: #EDE9FE;
+            color: #5B21B6;
+        }
+
+        .inv-legend {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            padding: 12px 16px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .legend-swatch {
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* ── MAP ── */
+        .map-wrap {
+            border-radius: var(--radius);
+            overflow: hidden;
+            height: 320px;
+            box-shadow: var(--shadow);
+            margin-bottom: 14px;
+        }
+
+        .map-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .places {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .place {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .place-ico {
+            font-size: 22px;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .place h4 {
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .place p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .place-dist {
+            margin-left: auto;
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 3px 9px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ── RULES ── */
+        .rule {
+            display: flex;
+            gap: 14px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: flex-start;
+        }
+
+        .rule:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .rule-ico {
+            font-size: 22px;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .rule h4 {
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .rule p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        /* ── FORM ── */
+        .form-intro {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.55;
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .field {
+            margin-bottom: 13px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            padding: 10px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 13.5px;
+            color: var(--text);
+            background: var(--white);
+            font-family: inherit;
+            transition: border-color .18s;
+            appearance: none;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .checks {
+            margin: 18px 0 20px;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: var(--bg);
+            border-radius: 9px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+        }
+
+        .check-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .check-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            margin-top: 1px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .check-row label {
+            font-size: 13px;
+            color: var(--text);
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .btn-send {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: -.01em;
+            transition: opacity .18s, transform .1s;
+        }
+
+        .btn-send:hover:not(:disabled) {
+            opacity: .92;
+        }
+
+        .btn-send:active:not(:disabled) {
+            transform: scale(.99);
+        }
+
+        .btn-send:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .success {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .success h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .success p {
+            font-size: 13.5px;
+            color: var(--muted);
+        }
+
+        .emailjs-note {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 9px;
+            padding: 11px 14px;
+            font-size: 12px;
+            color: #78350F;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .emailjs-note strong {
+            font-weight: 700;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 500px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .inv-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-logo">🏠</div>
+            <div>
+                <h1>Departamento Antofagasta</h1>
+                <p>Pedro Aguirre Cerda 8480, Depto 101 · Antofagasta</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <button class="tab-btn active" data-tab="bienvenida">Bienvenida</button>
+            <button class="tab-btn" data-tab="inventario">Inventario</button>
+            <button class="tab-btn" data-tab="mapa">Mapa</button>
+            <button class="tab-btn" data-tab="reglas">Reglas</button>
+            <button class="tab-btn" data-tab="formulario">Formulario</button>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+        <!-- ─ BIENVENIDA ─ -->
+        <section class="tab-pane active" id="tab-bienvenida">
+
+            <div class="hero">
+                <div class="hero-tag">✦ Airbnb</div>
+                <h2>¡Bienvenido/a!</h2>
+                <p>Gracias por elegir este departamento. Aquí encontrarás todo lo necesario para una estadía cómoda en Antofagasta.</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📶</div>
+                    <div>
+                        <div class="info-label">WiFi</div>
+                        <div class="info-val">MOVISTAR-WIFI6-2128</div>
+                        <div class="info-sub">Ver QR abajo</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🕐</div>
+                    <div>
+                        <div class="info-label">Horarios</div>
+                        <div class="info-val">Entrada: 15:00</div>
+                        <div class="info-sub">Salida: 11:00</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🚗</div>
+                    <div>
+                        <div class="info-label">Estacionamiento</div>
+                        <div class="info-val">Espacio N° 94</div>
+                        <div class="info-sub">Nivel -2 · Ver instrucciones abajo</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <div>
+                        <div class="info-label">Contacto</div>
+                        <div class="info-val">+56 9 7151 7744</div>
+                        <div class="info-sub">Disponible 24/7</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">Bienvenida</div>
+                <div class="access-text">
+                    🥂 Hemos dejado bebestibles y snacks para que disfruten de su primera noche.<br><br>
+                    🧊 El hielo del freezer fue preparado con agua hervida, especialmente para ustedes.<br><br>
+                    ☕ En la cocina hemos dejado café, té, azúcar y endulzante. También encontrarán aceite, sal y pimienta para su uso durante la estadía.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">WiFi</div>
+                <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+                    <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=WIFI:T:WPA;S:MOVISTAR-WIFI6-2128;P:wTqoK3q4FutqxwA73qm4;;"
+                        alt="QR WiFi"
+                        style="width:130px;height:130px;border-radius:10px;flex-shrink:0;border:1px solid var(--border);"
+                    />
+                    <div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Escanea el QR con tu celular para conectarte automáticamente</div>
+                        <div style="font-size:13px;margin-bottom:6px;"><span style="color:var(--muted);font-weight:500;">Red:</span> <strong>MOVISTAR-WIFI6-2128</strong></div>
+                        <div style="font-size:13px;word-break:break-all;"><span style="color:var(--muted);font-weight:500;">Clave:</span> <strong>wTqoK3q4FutqxwA73qm4</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">Cargadores USB y lámparas de emergencia</div>
+                <div class="access-text">
+                    🔌 Cada dormitorio cuenta con un cargador USB múltiple para que puedas cargar todos tus dispositivos.<br><br>
+                    💡 Las lámparas del velador se cargan por USB y funcionan como lámparas de emergencia en caso de un corte de energía.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">Áreas comunes del edificio</div>
+                <div class="access-text">
+                    🏊 Si necesitas usar el gimnasio, la piscina templada u otras áreas comunes, debes avisar en la recepción. Ahí encontrarás los horarios disponibles.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">Estacionamiento</div>
+                <div class="access-text">
+                    🚗 El estacionamiento N° 94 se encuentra en el nivel -2. Para llegar, dirígete hasta el fondo del estacionamiento y, antes de llegar a la pared blanca, dobla a la izquierda y baja un nivel.<br><br>
+                    🎛 Recuerda usar el control remoto para ingresar.
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ─ INVENTARIO ─ -->
+        <section class="tab-pane" id="tab-inventario">
+
+            <!-- BAÑO PRINCIPAL -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🚿 Baño principal</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">💨</span>Secador de pelo<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧼</span>Porta jabón<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🚿</span>Goma de ducha<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧺</span>Toalla de pies<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🗑</span>Papelero<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- BAÑO PASILLO -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🚿 Baño pasillo</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🧼</span>Porta jabón<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🚿</span>Goma de pies ducha<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧺</span>Toalla de pies<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧺</span>Canastillo<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🗑</span>Papelero<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- DORMITORIO PRINCIPAL -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🛏 Dormitorio principal</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🛏</span>Cama doble<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Almohadas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🛋</span>Cojín<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧸</span>Cobertor<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧶</span>Frazada<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Juego de sábanas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧺</span>Plancha<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧺</span>Tabla de planchar<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">👔</span>Colgadores de ropa<span class="inv-qty">×6</span></div>
+                    <div class="inv-item"><span class="emoji">🗄</span>Veladores<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">💡</span>Lámparas velador/emergencia<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🔌</span>Cargador USB múltiple<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧻</span>Toallas de mano<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🛁</span>Toallas grandes<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🪟</span>Cortina roller<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧵</span>Costurero pequeño<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🩹</span>Botiquín<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- DORMITORIO MEDIANO -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🛏 Dormitorio mediano</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🛏</span>Camas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🗄</span>Velador<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Almohadas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🛋</span>Cojines<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🧸</span>Cobertores<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🧶</span>Frazadas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Juegos de sábanas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🧻</span>Toallas de mano<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🛁</span>Toallas de cuerpo<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">👔</span>Colgadores de ropa<span class="inv-qty">×3</span></div>
+                    <div class="inv-item"><span class="emoji">🔌</span>Cargador USB múltiple<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🪟</span>Cortina roller<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- DORMITORIO PEQUEÑO -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🛏 Dormitorio pequeño</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🛏</span>Cama<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🗄</span>Velador<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Juego de sábanas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛌</span>Almohada<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛋</span>Cojín<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧸</span>Cobertor<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧶</span>Frazada<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧻</span>Toalla de mano<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛁</span>Toalla grande<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">👔</span>Colgadores de ropa<span class="inv-qty">×3</span></div>
+                    <div class="inv-item"><span class="emoji">🔌</span>Cargador USB múltiple<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- COCINA -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🍳 Cocina</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🥛</span>Vasos<span class="inv-qty">×6</span></div>
+                    <div class="inv-item"><span class="emoji">🍷</span>Copas<span class="inv-qty">×6</span></div>
+                    <div class="inv-item"><span class="emoji">🪵</span>Tabla de cóctel<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍲</span>Fuente roja<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🥗</span>Ensaladeras medianas<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🫙</span>Fuente vidrio para horno<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍽</span>Servilletero<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🔪</span>Tabla de picar<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🥄</span>Cuchara de palo<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍳</span>Espátula para fideos<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍳</span>Espátula de madera plana<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🔧</span>Tenaza de silicona<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍺</span>Abridor de botellas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧤</span>Guante + cubre mano<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">📦</span>Rollo film plástico<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧻</span>Paño de cocina<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧻</span>Porta toalla de papel<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">☕</span>Hervidor eléctrico<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍞</span>Tostador eléctrico<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧊</span>Refrigerador 2 puertas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🥘</span>Olla grande con tapa<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🥘</span>Olla mediana con tapa<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍳</span>Sartén<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🥗</span>Centrífuga / colador<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🫧</span>Porta lavalozas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧽</span>Esponja para lavado y su posillo<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🫧</span>Secador de platos y cubiertos<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🗑</span>Papelero<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧹</span>Canastos con útiles de aseo<span class="inv-qty">×2</span></div>
+
+                    <div class="inv-item"><span class="emoji">🍽</span>Vajilla completa<span class="inv-qty">×6 pers.</span></div>
+                    <div class="inv-item"><span class="emoji">🍴</span>Cubiertos completos<span class="inv-qty">×6 pers.</span></div>
+                    <div class="inv-item"><span class="emoji">🔪</span>Cuchillo cocinero grande<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🔪</span>Cuchillo cocinero pequeño<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🫙</span>Alcuza con aceite, sal y pimienta<span class="inv-qty">×5 pzs.</span></div>
+                </div>
+            </div>
+
+            <!-- COMEDOR -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🍽 Comedor</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🪑</span>Mesa para 6 personas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🪑</span>Sillas<span class="inv-qty">×6</span></div>
+                    <div class="inv-item"><span class="emoji">🏺</span>Fuente de decoración central<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🎁</span>Canastillo kit bienvenida<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- LIVING -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">📺 Living</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🛋</span>Sofá<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🛋</span>Cojines<span class="inv-qty">×4</span></div>
+                    <div class="inv-item"><span class="emoji">🧶</span>Manta<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🪑</span>Mesa baja<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🪑</span>Puff<span class="inv-qty">×4</span></div>
+                    <div class="inv-item"><span class="emoji">📺</span>Televisor 43"<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">📡</span>Control remoto con pilas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🎲</span>Juego de mesa<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">📶</span>Router de internet / Wi-Fi<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🪟</span>Cortinas, fierros y sujeta cortinas<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">📋</span>Manual de la casa<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- TERRAZA -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🌿 Terraza</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🌿</span>Planta grande<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🍶</span>Botellas decorativas<span class="inv-qty">×2</span></div>
+                </div>
+            </div>
+
+            <!-- ACCESO -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🔑 Acceso</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🔑</span>Llaves puerta principal<span class="inv-qty">×2</span></div>
+                    <div class="inv-item"><span class="emoji">🎛</span>Control remoto estacionamiento<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+            <!-- CLÓSET / ASEO -->
+            <div class="inv-section">
+                <div class="section-label" style="padding:0 4px;">🧹 Clóset / Aseo</div>
+                <div class="inv-grid">
+                    <div class="inv-item"><span class="emoji">🧹</span>Escoba<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧹</span>Pala<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🤖</span>Aspiradora<span class="inv-qty">×1</span></div>
+                    <div class="inv-item"><span class="emoji">🧹</span>Mopas desechables<span class="inv-qty">×1</span></div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ─ MAPA ─ -->
+        <section class="tab-pane" id="tab-mapa">
+
+            <div class="map-wrap" style="position:relative;margin-bottom:14px;">
+                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-70.3970%2C-23.5960%2C-70.3820%2C-23.5845&layer=mapnik&marker=-23.5903%2C-70.3896" style="width:100%;height:100%;border:none;display:block;pointer-events:none;" loading="lazy">
+                </iframe>
+                <a href="https://www.google.com/maps/place/Av.+Pedro+Aguirre+Cerda+8480,+1263195+Antofagasta/@-23.5892924,-70.392336,17z" target="_blank" rel="noopener noreferrer" style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:12px;text-decoration:none;">
+                    <span style="background:rgba(0,0,0,0.7);color:#fff;padding:7px 14px;border-radius:20px;font-size:13px;font-weight:600;">
+                        Ver en Google Maps ↗
+                    </span>
+                </a>
+                <div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.92);color:#1C1C1C;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:600;pointer-events:none;">
+                    📍 Pedro Aguirre Cerda 8480, Depto 101
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="section-label">Lugares cercanos</div>
+            </div>
+
+            <div class="places">
+                <div class="place">
+                    <div class="place-ico">⛽</div>
+                    <div>
+                        <h4>Bencinera Shell</h4>
+                        <p>Combustible · Av. PAC 8450 · abierta 24 hrs</p>
+                    </div>
+                    <span class="place-dist">a pasos</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🍕</div>
+                    <div>
+                        <h4>Pizza Pizza</h4>
+                        <p>Pizzería · Av. PAC 8605</p>
+                    </div>
+                    <span class="place-dist">~125 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🛒</div>
+                    <div>
+                        <h4>Unimarc</h4>
+                        <p>Supermercado · Av. PAC 8700</p>
+                    </div>
+                    <span class="place-dist">~220 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🍕</div>
+                    <div>
+                        <h4>Domino's Pizza</h4>
+                        <p>Pizzería · Av. PAC 8700</p>
+                    </div>
+                    <span class="place-dist">~220 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">💊</div>
+                    <div>
+                        <h4>Cruz Verde</h4>
+                        <p>Farmacia · Av. PAC 8700</p>
+                    </div>
+                    <span class="place-dist">~220 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🏬</div>
+                    <div>
+                        <h4>Shopping Norte</h4>
+                        <p>Centro comercial · Av. PAC 8251 · tiendas, restaurantes, farmacia</p>
+                    </div>
+                    <span class="place-dist">~230 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🍽</div>
+                    <div>
+                        <h4>Surreal Restobar</h4>
+                        <p>Restaurante & Bar · Av. PAC 8251 Local 47</p>
+                    </div>
+                    <span class="place-dist">~230 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🍻</div>
+                    <div>
+                        <h4>MB Sportbar</h4>
+                        <p>Pub & Sportbar · Av. PAC 8251</p>
+                    </div>
+                    <span class="place-dist">~230 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🍜</div>
+                    <div>
+                        <h4>Rest. Chino Hua Huang</h4>
+                        <p>Comida china · Av. PAC 8721</p>
+                    </div>
+                    <span class="place-dist">~241 m</span>
+                </div>
+                <div class="place">
+                    <div class="place-ico">🏬</div>
+                    <div>
+                        <h4>Paseo La Portada</h4>
+                        <p>Mall · Tottus, Homecenter, McDonald, Starbucks · Av. PAC 10578</p>
+                    </div>
+                    <span class="place-dist">~2 km</span>
+                </div>
+                <div class="place" style="display:none;"><!-- placeholder -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ─ REGLAS ─ -->
+        <section class="tab-pane" id="tab-reglas">
+            <div class="card">
+                <div class="section-label">Normas del departamento</div>
+
+                <div class="rule">
+                    <div class="rule-ico">🚭</div>
+                    <div>
+                        <h4>Prohibido fumar</h4>
+                        <p>Está estrictamente prohibido fumar dentro del departamento, en el balcón y en los espacios comunes del edificio.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🐾</div>
+                    <div>
+                        <h4>No mascotas</h4>
+                        <p>No se permite el ingreso de mascotas sin autorización previa del anfitrión. No se han autorizado mascotas para esta reserva.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🎉</div>
+                    <div>
+                        <h4>Sin fiestas ni eventos</h4>
+                        <p>Queda prohibido realizar fiestas, reuniones numerosas o cualquier actividad que genere molestias a los vecinos.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🔇</div>
+                    <div>
+                        <h4>Silencio nocturno</h4>
+                        <p>Se debe respetar el silencio entre las <strong>22:00 y las 08:00 hrs</strong>.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🗑</div>
+                    <div>
+                        <h4>Manejo de residuos</h4>
+                        <p>La basura debe depositarse en el compartimento ubicado en el pasillo central, cerca del ascensor. Las botellas de vidrio, latas y cartones deben dejarse en las repisas del mismo sector. El resto de la basura debe tirarse en bolsas por el shaft.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🕐</div>
+                    <div>
+                        <h4>Check-out puntual</h4>
+                        <p>La salida debe realizarse antes de las <strong>11:00 hrs</strong>. Deja las llaves y el control remoto en la mesa del comedor.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">💧</div>
+                    <div>
+                        <h4>Uso responsable</h4>
+                        <p>Al salir, apaga las luces y todos los aparatos eléctricos, y cierra bien las ventanas. Revisa que las llaves del agua queden bien cerradas.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">🔑</div>
+                    <div>
+                        <h4>Llaves y accesos</h4>
+                        <p>La pérdida de llaves o del control remoto del estacionamiento tiene un costo de reposición. No se permite el ingreso de personas no registradas en la reserva.</p>
+                    </div>
+                </div>
+                <div class="rule">
+                    <div class="rule-ico">💥</div>
+                    <div>
+                        <h4>Daños y deterioro</h4>
+                        <p>Cualquier daño causado durante la estadía será responsabilidad del huésped y tendrá costo adicional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─ FORMULARIO ─ -->
+        <section class="tab-pane" id="tab-formulario">
+            <div class="card">
+                <div class="section-label">Declaración de ingreso</div>
+
+                <!-- Nota EmailJS -->
+                <div class="emailjs-note" id="emailjsNote">
+                    <strong>Para el anfitrión:</strong> Para activar el envío automático de email, configura EmailJS en el código HTML
+                    (reemplaza <code>TU_PUBLIC_KEY</code>, <code>TU_SERVICE_ID</code> y <code>TU_TEMPLATE_ID</code>).
+                    Mientras tanto, el formulario usará el cliente de correo del huésped como alternativa.
+                </div>
+
+                <p class="form-intro">
+                    Por favor completa este formulario al momento de tu ingreso. Confirma que has revisado el inventario y leído las normas del departamento.
+                </p>
+
+                <form id="guestForm">
+                    <div class="field">
+                        <label>Nombre completo *</label>
+                        <input type="text" id="f-name" placeholder="Tu nombre completo" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Correo electrónico *</label>
+                            <input type="email" id="f-email" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="field">
+                            <label>Teléfono</label>
+                            <input type="tel" id="f-phone" placeholder="+56 9 0000 0000">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Comentarios o consultas</label>
+                        <textarea id="f-comments" placeholder="¿Alguna observación al ingresar?"></textarea>
+                    </div>
+
+                    <div class="checks">
+                        <div class="section-label" style="margin-bottom: 10px;">Confirmaciones obligatorias *</div>
+
+                        <div class="check-row">
+                            <input type="checkbox" id="c-rules" required>
+                            <label for="c-rules">He leído y acepto todas las <strong>normas del departamento</strong>.</label>
+                        </div>
+                        <div class="check-row">
+                            <input type="checkbox" id="c-inv" required>
+                            <label for="c-inv">He revisado el <strong>inventario</strong> y confirmo que todo está presente y en buen estado al momento de mi ingreso.</label>
+                        </div>
+                        <div class="check-row">
+                            <input type="checkbox" id="c-resp" required>
+                            <label for="c-resp">Acepto ser responsable de cualquier daño o pérdida de artículos durante mi estadía.</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-send" id="sendBtn">Enviar confirmación</button>
+                </form>
+
+                <div class="success" id="successBox">
+                    <div class="success-icon">✅</div>
+                    <h3>¡Confirmación enviada!</h3>
+                    <p>Gracias por completar el formulario. Que disfrutes tu estadía en Antofagasta.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // ──────────────────────────────────────────────
+        // CONFIGURACIÓN EMAILJS
+        // 1. Crea cuenta en https://emailjs.com (gratis)
+        // 2. Conecta Gmail como servicio
+        // 3. Crea una plantilla con las variables abajo
+        // 4. Reemplaza los tres valores:
+        const EJS = {
+            publicKey: "URnjwN_koZacVrVkA",
+            serviceId: "service_email_depto",
+            templateId: "template_checkin"
+        };
+        // Variables en la plantilla EmailJS:
+        // {{guest_name}}, {{guest_email}}, {{guest_phone}},
+        // {{check_in}}, {{check_out}}, {{num_guests}},
+        // {{booking_code}}, {{comments}}, {{timestamp}}
+        // ──────────────────────────────────────────────
+
+        const isEmailJSReady = EJS.publicKey !== "TU_PUBLIC_KEY";
+        if (isEmailJSReady && typeof emailjs !== 'undefined') {
+            emailjs.init(EJS.publicKey);
+            document.getElementById('emailjsNote').style.display = 'none';
+        }
+
+        // ── TABS ──
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.tab;
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + id).classList.add('active');
+            });
+        });
+
+        // ── FORM ──
+        document.getElementById('guestForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const data = {
+                guest_name: document.getElementById('f-name').value.trim(),
+                guest_email: document.getElementById('f-email').value.trim(),
+                guest_phone: document.getElementById('f-phone').value.trim() || 'No indicado',
+                comments: document.getElementById('f-comments').value.trim() || 'Sin comentarios',
+                timestamp: new Date().toLocaleString('es-CL', { dateStyle: 'full', timeStyle: 'short' })
+            };
+
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            btn.textContent = 'Enviando…';
+
+            let sent = false;
+
+            if (isEmailJSReady && typeof emailjs !== 'undefined') {
+                try {
+                    await emailjs.send(EJS.serviceId, EJS.templateId, {
+                        ...data,
+                        to_email: "paul.beltrand@gmail.com"
+                    });
+                    sent = true;
+                } catch (err) {
+                    console.warn('EmailJS falló, usando mailto de respaldo.', err);
+                }
+            }
+
+            if (!sent) {
+                // Fallback: mailto
+                const subject = encodeURIComponent(`Ingreso confirmado · ${data.guest_name}`);
+                const body = encodeURIComponent(
+                    `FORMULARIO DE INGRESO - Depto Pedro Aguirre Cerda 8480, Antofagasta
+${'─'.repeat(50)}
+Nombre:     ${data.guest_name}
+Email:      ${data.guest_email}
+Teléfono:   ${data.guest_phone}
+Comentarios:${data.comments}
+${'─'.repeat(50)}
+Confirmaciones:
+✅ Acepta normas del departamento
+✅ Revisó y acepta inventario
+✅ Acepta responsabilidad por daños
+${'─'.repeat(50)}
+Enviado: ${data.timestamp}`
+                );
+                window.location.href = `mailto:paul.beltrand@gmail.com?subject=${subject}&body=${body}`;
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Enviar confirmación';
+            document.getElementById('guestForm').style.display = 'none';
+            document.getElementById('successBox').style.display = 'block';
+        });
+    </script>
+
+</body>
+
+</html>
