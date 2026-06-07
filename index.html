@@ -40,9 +40,6 @@
             background: var(--white);
             border-bottom: 1px solid var(--border);
             padding: 18px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 200;
         }
 
         .header-inner {
@@ -83,9 +80,6 @@
             border-bottom: 1px solid var(--border);
             overflow-x: auto;
             scrollbar-width: none;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .nav::-webkit-scrollbar {
@@ -616,6 +610,7 @@
 <body>
 
     <!-- HEADER -->
+    <div style="position:sticky;top:0;z-index:200;">
     <header class="header">
         <div class="header-inner">
             <div class="header-logo">🏠</div>
@@ -636,6 +631,7 @@
             <button class="tab-btn" data-tab="formulario">Formulario</button>
         </div>
     </nav>
+    </div>
 
     <!-- CONTENT -->
     <main class="content">
